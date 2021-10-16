@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:view locale="#{languageBean.locale}"/>
+<f:loadBundle basename="messages" var="msg"/>
+
+<h:head>
+    <title>#{msg.exams}</title>
+</h:head>
+
+<h:body>
+    <p:linkButton outcome="/index" value="#{msg.home}"/>
+
+    <h1>#{msg.exams}</h1><br/>
+
+    <p:dataTable id="exams" var="exam" value="#{getExamsBean.exams}" rowKey="#{exam.id}">
+        <p:column headerText="ID">
+            <h:outputText value="#{exam.id}"/>
+        </p:column>
+        <p:column headerText="#{msg.name}">
+            <h:outputText value="#{exam.name}"/>
+        </p:column>
+        <p:column headerText="#{msg.startingTime}">
+            <h:outputText value="#{exam.startingTime}"/>
+        </p:column>
+        <p:column headerText="#{msg.duration}">
+            <h:outputText value="#{exam.duration}"/>
+        </p:column>
+    </p:dataTable>
+
+    <h1>#{msg.createAnExam}</h1><br/>
+
+    <h:form>
+        <span class="ui-float-label">
+            <p:inputText id="name" value="#{createExamBean.name}" required="true"/>
+            <p:outputLabel for="name" value="${msg.name}"/>
+        </span>
+
+        <div class="p-field p-col-12 p-md-4">
+            <p:outputLabel for="startingTime" value="#{msg.startingTime}"/><br/>
+            <p:datePicker id="startingTime" value="#{createExamBean.startingTime}"
+                          showTime="true" required="true" validator="#{createExamBean.validateStartingTime}"/>
+        </div>
+
+        <div class="p-field p-col-12 p-md-4">
+            <p:outputLabel for="duration" value="#{msg.duration}"/><br/>
+            <p:inputNumber id="duration" value="#{createExamBean.duration}" required="true"
+                           decimalPlaces="2" modifyValueOnWheel="false" minValue="0" maxValue="4"/>
+        </div>
+
+        <h:commandButton value="#{msg.submit}" action="#{createExamBean.submit}"/>
+    </h:form>
+</h:body>
+
+</html>

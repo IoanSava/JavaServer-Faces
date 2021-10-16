@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:view locale="#{languageBean.locale}"/>
+<f:loadBundle basename="messages" var="msg"/>
+
+<h:head>
+    <p:linkButton outcome="/index" value="#{msg.home}"/>
+
+    <title>#{msg.students}</title>
+</h:head>
+
+<h:body>
+    <h1>#{msg.students}</h1><br/>
+
+    <p:dataTable id="students" var="student" value="#{getStudentsBean.students}" rowKey="#{student.id}">
+        <p:column headerText="#{msg.name}">
+            <h:outputText value="#{student.name}"/>
+        </p:column>
+        <p:column headerText="#{msg.exams}">
+            <h:outputText value="#{student.assignedExams}"/>
+        </p:column>
+    </p:dataTable>
+
+    <h1>#{msg.createAStudent}</h1><br/>
+
+    <h:form>
+        <span class="ui-float-label">
+            <p:inputText id="name" value="#{createStudentBean.name}" required="true"/>
+            <p:outputLabel for="name" value="${msg.name}"/>
+        </span><br/>
+
+        <span class="ui-float-label">
+            <p:inputText id="exams" value="#{createStudentBean.assignedExams}" required="true"
+                         validator="#{createStudentBean.validateAssignedExams}"/>
+            <p:outputLabel for="exams" value="${msg.exams}"/>
+        </span><br/>
+
+        <h:commandButton value="#{msg.submit}" action="#{createStudentBean.submit}"/>
+    </h:form>
+</h:body>
+
+</html>
