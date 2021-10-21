@@ -10,12 +10,12 @@
 <f:loadBundle basename="messages" var="msg"/>
 
 <h:head>
-    <p:linkButton outcome="/index" value="#{msg.home}"/>
-
     <title>#{msg.students}</title>
 </h:head>
 
 <h:body>
+    <p:linkButton outcome="/index" value="#{msg.home}"/>
+        
     <h1>#{msg.students}</h1><br/>
 
     <p:dataTable id="students" var="student" value="#{getStudentsBean.students}" rowKey="#{student.id}">
