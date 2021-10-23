@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<ui:composition template="WEB-INF/templates/dataEdit.xhtml">
+
+    <ui:param name="editMessage" value="#{msg.editStudent}"/>
+
+    <ui:define name="dataEditContent">
+            <span class="ui-float-label">
+                <p:inputText id="name" value="#{editStudentBean.student.name}" required="true"/>
+                <p:outputLabel for="name" value="${msg.name}"/>
+            </span><br/>
+
+            <span class="ui-float-label">
+                <p:inputText id="exams" value="#{editStudentBean.student.assignedExams}" required="true">
+                    <f:validator validatorId="assignedExamsValidator"/>
+                </p:inputText>
+                <p:outputLabel for="exams" value="${msg.exams}"/>
+            </span><br/>
+
+        <h:commandButton value="#{msg.edit}" action="#{editStudentBean.submit}"/>
+    </ui:define>
+
+</ui:composition>
+</html>

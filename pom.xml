@@ -16,7 +16,7 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <javax.servlet-api.version>4.0.1</javax.servlet-api.version>
         <javax.faces-api.version>2.3</javax.faces-api.version>
-        <primefaces.version>10.0.0</primefaces.version>
+        <primefaces.version>8.0</primefaces.version>
         <lombok.version>1.18.22</lombok.version>
         <postgresql.version>42.2.24</postgresql.version>
         <maven-war-plugin.version>3.3.1</maven-war-plugin.version>
@@ -50,12 +50,6 @@
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>${postgresql.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jetbrains</groupId>
-            <artifactId>annotations</artifactId>
-            <version>RELEASE</version>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
 

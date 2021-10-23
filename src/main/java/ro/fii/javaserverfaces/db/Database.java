@@ -5,9 +5,6 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class Database {
-    private static Database instance;
-    private Connection connection;
-
     /**
      * jdbc:sub-protocol:identifier
      */
@@ -15,6 +12,8 @@ public class Database {
     private static final String USERNAME = "postgres";
     private static final String PASSWORD = "password";
     private static final String POSTGRESQL_DRIVER = "org.postgresql.Driver";
+    private static Database instance;
+    private Connection connection;
 
     private Database() {
         try {
@@ -23,10 +22,6 @@ public class Database {
         } catch (ClassNotFoundException | SQLException exception) {
             System.out.println("Database Connection Creation Failed: " + exception.getMessage());
         }
-    }
-
-    public Connection getConnection() {
-        return connection;
     }
 
     /**
@@ -39,5 +34,9 @@ public class Database {
         }
 
         return instance;
+    }
+
+    public Connection getConnection() {
+        return connection;
     }
 }

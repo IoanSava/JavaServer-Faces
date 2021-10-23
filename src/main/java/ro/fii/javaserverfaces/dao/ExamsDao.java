@@ -3,6 +3,7 @@ package ro.fii.javaserverfaces.dao;
 import ro.fii.javaserverfaces.dtos.ExamDto;
 import ro.fii.javaserverfaces.entities.Exam;
 
+import javax.naming.NamingException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,19 +17,16 @@ public class ExamsDao extends Dao {
     private static final String SELECT_EXAM_ID_BY_STUDENT_ID = "SELECT exam_id FROM students_exams WHERE student_id = ?";
     private static final String CREATE_EXAM_COMMAND = "INSERT INTO exams(name, starting_time, duration) VALUES (?, ?, ?);";
     private static final String ASSIGN_EXAM_TO_STUDENT_COMMAND = "INSERT INTO students_exams(student_id, exam_id) VALUES(?, ?);";
+    private static final String DELETE_STUDENT_FROM_EXAMS = "DELETE FROM students_exams WHERE student_id = ?;";
 
-    public ExamsDao() {
-        try {
-            connection = getConnection();
-        } catch (SQLException exception) {
-            exception.printStackTrace();
-        }
+    public ExamsDao() throws NamingException {
+        super();
     }
 
     public List<Exam> getAll() throws SQLException {
         List<Exam> exams = new ArrayList<>();
 
-        try (Statement statement = connection.createStatement()) {
+        try (Statement statement = getConnection().createStatement()) {
             ResultSet resultSet = statement.executeQuery(SELECT_ALL_EXAMS_QUERY);
             while (resultSet.next()) {
                 Integer id = resultSet.getInt("id");
@@ -46,7 +44,7 @@ public class ExamsDao extends Dao {
     public String getExamIdsByStudentId(Integer studentId) throws SQLException {
         StringBuilder examIds = new StringBuilder();
 
-        try (PreparedStatement preparedStatement = connection.prepareStatement(SELECT_EXAM_ID_BY_STUDENT_ID)) {
+        try (PreparedStatement preparedStatement = getConnection().prepareStatement(SELECT_EXAM_ID_BY_STUDENT_ID)) {
             preparedStatement.setInt(1, studentId);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
@@ -63,7 +61,7 @@ public class ExamsDao extends Dao {
     }
 
     public void create(ExamDto exam) throws SQLException {
-        try (PreparedStatement preparedStatement = connection.prepareStatement(CREATE_EXAM_COMMAND)) {
+        try (PreparedStatement preparedStatement = getConnection().prepareStatement(CREATE_EXAM_COMMAND)) {
             preparedStatement.setString(1, exam.getName());
             preparedStatement.setTimestamp(2, exam.getStartingTime());
             preparedStatement.setFloat(3, exam.getDuration());
@@ -72,9 +70,16 @@ public class ExamsDao extends Dao {
     }
 
     public void assignExamToStudent(Integer examId, Integer studentId) throws SQLException {
-        try (PreparedStatement preparedStatement = connection.prepareStatement(ASSIGN_EXAM_TO_STUDENT_COMMAND)) {
+        try (PreparedStatement preparedStatement = getConnection().prepareStatement(ASSIGN_EXAM_TO_STUDENT_COMMAND)) {
             preparedStatement.setInt(1, studentId);
             preparedStatement.setInt(2, examId);
+            preparedStatement.execute();
+        }
+    }
+
+    public void removeExamsForStudent(Integer studentId) throws SQLException {
+        try (PreparedStatement preparedStatement = getConnection().prepareStatement(DELETE_STUDENT_FROM_EXAMS)) {
+            preparedStatement.setInt(1, studentId);
             preparedStatement.execute();
         }
     }

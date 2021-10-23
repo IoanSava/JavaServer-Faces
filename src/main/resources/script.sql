@@ -47,3 +47,5 @@ insert into students_exams(student_id, exam_id)
 values(3, 3);
 insert into students_exams(student_id, exam_id)
 values(3, 4);
+
+delete from students where id > 13;

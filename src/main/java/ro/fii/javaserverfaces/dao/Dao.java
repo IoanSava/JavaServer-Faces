@@ -1,17 +1,20 @@
 package ro.fii.javaserverfaces.dao;
 
-import ro.fii.javaserverfaces.db.Database;
-
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 
 public abstract class Dao {
-    protected Connection connection = null;
+    private final DataSource examSchedulingDatabase;
+
+    public Dao() throws NamingException {
+        InitialContext initialContext = new InitialContext();
+        this.examSchedulingDatabase = (DataSource) initialContext.lookup("java:/ExamScheduling");
+    }
 
     protected Connection getConnection() throws SQLException {
-        if (connection == null) {
-            connection = Database.getInstance().getConnection();
-        }
-        return connection;
+        return examSchedulingDatabase.getConnection();
     }
 }
