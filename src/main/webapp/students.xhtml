@@ -18,7 +18,7 @@
                 <h:outputText value="#{entity.name}"/>
             </p:column>
             <p:column headerText="#{msg.exams}">
-                <h:outputText value="#{entity.assignedExams}"/>
+                <h:outputText value="#{entity.getAssignedExamsAsIds()}"/>
             </p:column>
             <p:column headerText="#{msg.edit}">
                 <p:linkButton outcome="#{studentViewBean.getEditStudentUrl(entity.id)}" value="#{msg.edit}"/>
@@ -37,7 +37,7 @@
                 <p:inputText id="exams" value="#{createStudentBean.assignedExams}" required="true">
                     <f:validator validatorId="assignedExamsValidator"/>
                 </p:inputText>
-                <p:outputLabel for="exams" value="${msg.exams}"/>
+                <p:outputLabel for="exams" value="#{msg.exams}"/>
             </span><br/>
 
             <h:commandButton value="#{msg.submit}" action="#{createStudentBean.submit}">

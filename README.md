@@ -1,3 +1,21 @@
+# [Lab 5] Java Persistence API (JPA)
+
+### ✔️ Persistence layer using JPA
+
+* Entities: ro/fii/javaserverfaces/entities
+* Data access objects: ro/fii/javaserverfaces/dao
+* Unit tests: src/test/java
+
+### ✔️ Inheritance mapping
+
+* Implemented two types of exams (**WrittenTest** and **ProjectPresentation**). 
+* The user interface was adapted accordingly (a new page was created for each type of exam).
+
+### ✔️ Exam search page
+
+* Exams can be filtered by name and by start date and/or end date (the view exams page was updated accordingly).
+* **JPA Criteria API** was used.
+
 # [Lab 4] JavaServer-Faces, Faceletes, JNDI
 
 ### ✔️ Templates

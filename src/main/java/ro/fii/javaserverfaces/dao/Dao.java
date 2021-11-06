@@ -1,20 +1,45 @@
 package ro.fii.javaserverfaces.dao;
 
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.SQLException;
+import ro.fii.javaserverfaces.db.Database;
+import ro.fii.javaserverfaces.entities.AbstractEntity;
 
-public abstract class Dao {
-    private final DataSource examSchedulingDatabase;
+import javax.persistence.EntityManager;
 
-    public Dao() throws NamingException {
-        InitialContext initialContext = new InitialContext();
-        this.examSchedulingDatabase = (DataSource) initialContext.lookup("java:/ExamScheduling");
+public abstract class Dao<T extends AbstractEntity> {
+    protected EntityManager entityManager;
+
+    public Dao() {
+        entityManager = Database.getInstance().getEntityManager();
     }
 
-    protected Connection getConnection() throws SQLException {
-        return examSchedulingDatabase.getConnection();
+    public void create(T entity) {
+        beginTransaction();
+        entityManager.persist(entity);
+        entityManager.flush();
+        commitTransaction();
+    }
+
+    protected void beginTransaction() {
+        try {
+            entityManager.getTransaction().begin();
+        } catch (IllegalStateException e) {
+            rollbackTransaction();
+        }
+    }
+
+    protected void commitTransaction() {
+        try {
+            entityManager.getTransaction().commit();
+        } catch (IllegalStateException e) {
+            rollbackTransaction();
+        }
+    }
+
+    protected void rollbackTransaction() {
+        try {
+            entityManager.getTransaction().rollback();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
     }
 }

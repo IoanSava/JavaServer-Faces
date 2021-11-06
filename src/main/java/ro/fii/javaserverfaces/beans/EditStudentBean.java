@@ -3,31 +3,33 @@ package ro.fii.javaserverfaces.beans;
 import lombok.Getter;
 import lombok.Setter;
 import ro.fii.javaserverfaces.dao.StudentsDao;
+import ro.fii.javaserverfaces.dtos.StudentDto;
 import ro.fii.javaserverfaces.entities.Student;
 
+import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
-import javax.naming.NamingException;
 import java.io.Serializable;
-import java.sql.SQLException;
 
-@Getter
-@Setter
 @Named
 @ViewScoped
 public class EditStudentBean implements Serializable {
-    private final StudentsDao studentsDao;
-    private Student student;
+    private Integer id;
+    @Getter
+    @Setter
+    private StudentDto studentDto;
+    private StudentsDao studentsDao;
 
-    public EditStudentBean() throws SQLException, NamingException {
+    @PostConstruct
+    public void init() {
         studentsDao = new StudentsDao();
-        Integer id =
-                Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("student_id"));
-        student = studentsDao.getById(id);
+        id = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("student_id"));
+        Student student = studentsDao.getById(id);
+        studentDto = new StudentDto(student.getName(), student.getAssignedExamsAsIds());
     }
 
-    public void submit() throws SQLException {
-        studentsDao.update(student);
+    public void submit() {
+        studentsDao.update(id, studentDto);
     }
 }

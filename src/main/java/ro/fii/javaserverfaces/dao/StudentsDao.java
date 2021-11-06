@@ -1,97 +1,54 @@
 package ro.fii.javaserverfaces.dao;
 
 import ro.fii.javaserverfaces.dtos.StudentDto;
+import ro.fii.javaserverfaces.entities.Exam;
 import ro.fii.javaserverfaces.entities.Student;
 
-import javax.naming.NamingException;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StudentsDao extends Dao {
-    private static final String SELECT_ALL_STUDENTS_QUERY = "SELECT id, name FROM students;";
-    private static final String SELECT_STUDENT_NAME_BY_ID = "SELECT name FROM students WHERE id = ?;";
-    private static final String CREATE_STUDENT_COMMAND = "INSERT INTO students(name) VALUES (?);";
-    private static final String UPDATE_STUDENT_NAME = "UPDATE students SET name = ? WHERE id = ?;";
-
-    private final ExamsDao examsDao;
-
-    public StudentsDao() throws NamingException {
-        super();
-        examsDao = new ExamsDao();
+public class StudentsDao extends Dao<Student> {
+    public List getAll() {
+        return entityManager.createNamedQuery("Student.getAll").getResultList();
     }
 
-    public List<Student> getAll() throws SQLException {
-        List<Student> students = new ArrayList<>();
-
-        try (Statement statement = getConnection().createStatement()) {
-            ResultSet resultSet = statement.executeQuery(SELECT_ALL_STUDENTS_QUERY);
-            while (resultSet.next()) {
-                Integer id = resultSet.getInt("id");
-                String name = resultSet.getString("name");
-                String assignedExams = examsDao.getExamIdsByStudentId(id);
-                Student student = new Student(id, name, assignedExams);
-                students.add(student);
-            }
-        }
-
-        return students;
+    public Student getById(Integer id) {
+        return entityManager.find(Student.class, id);
     }
 
-    public Student getById(Integer id) throws SQLException {
-        Student student = null;
-        try (PreparedStatement preparedStatement =
-                     getConnection().prepareStatement(SELECT_STUDENT_NAME_BY_ID)) {
-            preparedStatement.setInt(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                String name = resultSet.getString("name");
-                String assignedExams = examsDao.getExamIdsByStudentId(id);
-                student = new Student(id, name, assignedExams);
-            }
-        }
+    public void create(StudentDto studentDto) {
+        Student student = new Student(studentDto.getName());
+        List<Exam> assignedExams = getListOfExamsForStudentDto(studentDto);
+        student.addExams(assignedExams.toArray(new Exam[0]));
 
-        return student;
+        beginTransaction();
+        entityManager.persist(student);
+        entityManager.flush();
+        commitTransaction();
     }
 
-    public void create(StudentDto student) throws SQLException {
-        String[] generatedColumns = {"id"};
+    public void update(Integer id, StudentDto studentDto) {
+        Student student = this.getById(id);
+        student.setName(studentDto.getName());
+        student.setAssignedExams(new ArrayList<>());
+        List<Exam> assignedExams = getListOfExamsForStudentDto(studentDto);
+        student.addExams(assignedExams.toArray(new Exam[0]));
 
-        try (PreparedStatement preparedStatement =
-                     getConnection().prepareStatement(CREATE_STUDENT_COMMAND, generatedColumns)) {
-            preparedStatement.setString(1, student.getName());
-            preparedStatement.execute();
-
-
-            try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
-                    Integer studentId = Math.toIntExact(generatedKeys.getLong(1));
-                    String[] assignedExamIds = student.getAssignedExams().split(",");
-                    for (String examId : assignedExamIds) {
-                        examsDao.assignExamToStudent(Integer.parseInt(examId), studentId);
-                    }
-                } else {
-                    throw new SQLException("Creating user failed, no ID obtained.");
-                }
-            }
-        }
+        beginTransaction();
+        entityManager.merge(student);
+        entityManager.flush();
+        commitTransaction();
     }
 
-    public void update(Student student) throws SQLException {
-        try (PreparedStatement preparedStatement = getConnection().prepareStatement(UPDATE_STUDENT_NAME)) {
-            preparedStatement.setString(1, student.getName());
-            preparedStatement.setInt(2, student.getId());
-            preparedStatement.execute();
-        }
+    private List<Exam> getListOfExamsForStudentDto(StudentDto studentDto) {
+        List<Exam> exams = new ArrayList<>();
 
-        examsDao.removeExamsForStudent(student.getId());
-
-        String[] assignedExamIds = student.getAssignedExams().split(",");
+        String[] assignedExamIds = studentDto.getAssignedExams().split(",");
         for (String examId : assignedExamIds) {
-            examsDao.assignExamToStudent(Integer.parseInt(examId), student.getId());
+            Exam exam = entityManager.find(Exam.class, Integer.parseInt(examId));
+            exams.add(exam);
         }
+
+        return exams;
     }
 }

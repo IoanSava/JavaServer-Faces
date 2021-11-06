@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<f:view>
+    <cc:interface>
+        <cc:attribute name="createExamBean" type="ro.fii.javaserverfaces.beans.CreateExamBean"/>
+    </cc:interface>
+    <cc:implementation>
+        <h1>#{msg.createAnExam}</h1><br/>
+
+        <h:form>
+            <span class="ui-float-label">
+                <p:inputText id="name" value="#{cc.attrs.createExamBean.name}" required="true"/>
+                <p:outputLabel for="name" value="${msg.name}"/>
+            </span>
+
+            <div class="p-field p-col-12 p-md-4">
+                <p:outputLabel for="startingTime" value="#{msg.startingTime}"/><br/>
+                <p:datePicker id="startingTime" value="#{cc.attrs.createExamBean.startingTime}" showTime="true"
+                              required="true">
+                    <f:validator validatorId="examStartingTimeValidator"/>
+                </p:datePicker>
+            </div>
+
+            <div class="p-field p-col-12 p-md-4">
+                <p:outputLabel for="duration" value="#{msg.duration}"/><br/>
+                <p:inputNumber id="duration" value="#{cc.attrs.createExamBean.duration}" required="true"
+                               decimalPlaces="2" modifyValueOnWheel="false" minValue="0" maxValue="4"/>
+            </div>
+
+            <cc:insertChildren/>
+
+            <h:commandButton value="#{msg.submit}" action="#{cc.attrs.createExamBean.submit}">
+                <f:ajax execute="@form" render="dataTable"/>
+            </h:commandButton>
+        </h:form>
+    </cc:implementation>
+</f:view>
+</html>

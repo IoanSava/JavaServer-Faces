@@ -10,7 +10,6 @@ import java.util.Date;
 
 @FacesValidator(value = "examStartingTimeValidator")
 public class ExamStartingTimeValidator implements Validator {
-
     @Override
     public void validate(FacesContext context, UIComponent component, Object value) {
         Date startingTime = (Date) value;

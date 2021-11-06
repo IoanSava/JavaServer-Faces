@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:my="http://java.sun.com/jsf/composite/components">
+
+<ui:composition template="WEB-INF/templates/dataView.xhtml">
+
+    <ui:param name="pageTitle" value="#{msg.projectPresentations}"/>
+
+    <ui:define name="dataViewContent">
+        <h:form>
+            <span class="ui-float-label">
+                <p:inputText id="name" value="#{projectPresentationViewBean.examFilters.name}"
+                             placeholder="#{msg.name}"/>
+                <p:selectBooleanCheckbox value="#{projectPresentationViewBean.examFilters.useNameFilter}"/>
+            </span>
+
+            <span class="ui-float-label">
+                <p:datePicker id="startDate" value="#{projectPresentationViewBean.examFilters.startDate}"
+                              showTime="true" placeholder="#{msg.startDate}"/>
+                <p:selectBooleanCheckbox value="#{projectPresentationViewBean.examFilters.useStartDateFilter}"/>
+            </span>
+
+            <span class="ui-float-label">
+                <p:datePicker id="endDate" value="#{projectPresentationViewBean.examFilters.endDate}" showTime="true"
+                              placeholder="#{msg.endDate}"/>
+                <p:selectBooleanCheckbox value="#{projectPresentationViewBean.examFilters.useEndDateFilter}"/>
+            </span>
+        </h:form>
+
+        <my:examDataTable examView="#{projectPresentationViewBean}">
+            <p:column headerText="#{msg.areTeamsAllowed}">
+                <h:outputText value="#{entity.areTeamsAllowed}"/>
+            </p:column>
+        </my:examDataTable>
+
+        <my:createExamForm createExamBean="#{createProjectPresentationBean}">
+            <div class="p-field p-col-12 p-md-4">
+                <p:outputLabel for="areTeamsAllowed" value="#{msg.areTeamsAllowed}"/><br/>
+                <p:selectBooleanCheckbox id="areTeamsAllowed" value="#{createProjectPresentationBean.areTeamsAllowed}"
+                                         required="true"/>
+            </div>
+        </my:createExamForm>
+    </ui:define>
+
+</ui:composition>
+
+</html>

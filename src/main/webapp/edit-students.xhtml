@@ -13,12 +13,12 @@
 
     <ui:define name="dataEditContent">
             <span class="ui-float-label">
-                <p:inputText id="name" value="#{editStudentBean.student.name}" required="true"/>
+                <p:inputText id="name" value="#{editStudentBean.studentDto.name}" required="true"/>
                 <p:outputLabel for="name" value="${msg.name}"/>
             </span><br/>
 
             <span class="ui-float-label">
-                <p:inputText id="exams" value="#{editStudentBean.student.assignedExams}" required="true">
+                <p:inputText id="exams" value="#{editStudentBean.studentDto.assignedExams}" required="true">
                     <f:validator validatorId="assignedExamsValidator"/>
                 </p:inputText>
                 <p:outputLabel for="exams" value="${msg.exams}"/>

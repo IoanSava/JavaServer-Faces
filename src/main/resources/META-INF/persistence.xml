@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
+
+    <persistence-unit name="ExamSchedulingPU" transaction-type="RESOURCE_LOCAL">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+        <non-jta-data-source>java:/ExamScheduling</non-jta-data-source>
+        <class>ro.fii.javaserverfaces.entities.Exam</class>
+        <class>ro.fii.javaserverfaces.entities.ProjectPresentation</class>
+        <class>ro.fii.javaserverfaces.entities.WrittenTest</class>
+        <class>ro.fii.javaserverfaces.entities.Student</class>
+    </persistence-unit>
+
+</persistence>

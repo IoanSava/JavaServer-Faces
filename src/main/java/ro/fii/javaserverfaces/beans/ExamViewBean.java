@@ -1,26 +1,21 @@
 package ro.fii.javaserverfaces.beans;
 
+import lombok.Getter;
+import lombok.Setter;
 import ro.fii.javaserverfaces.dao.ExamsDao;
 import ro.fii.javaserverfaces.entities.Exam;
+import ro.fii.javaserverfaces.utils.ExamFilters;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Named;
-import javax.naming.NamingException;
-import java.sql.SQLException;
 import java.util.List;
 
-@Named
-@ApplicationScoped
-public class ExamViewBean extends DataViewBean<Exam, Integer> {
-    private final ExamsDao examsDao;
+@Getter
+@Setter
+public class ExamViewBean<T extends Exam> extends DataViewBean<Exam> {
+    protected ExamFilters examFilters = new ExamFilters();
+    protected ExamsDao<T> examsDao;
 
-    public ExamViewBean() throws SQLException, NamingException {
-        examsDao = new ExamsDao();
-        entities = examsDao.getAll();
-    }
-
-    public List<Exam> getEntities() throws SQLException {
-        entities = examsDao.getAll();
+    public List getEntities() {
+        entities = examsDao.getAll(examFilters);
         return entities;
     }
 }
