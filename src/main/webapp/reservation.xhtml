@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:my="http://java.sun.com/jsf/composite/components">
+
+<ui:composition template="WEB-INF/templates/dataView.xhtml">
+
+    <ui:param name="pageTitle" value="#{msg.reservation}"/>
+
+    <ui:define name="dataViewContent">
+        <my:dataTable id="reservations" dataView="#{resourceViewBean}">
+            <p:column headerText="#{msg.name}">
+                <h:outputText value="#{entity.name}"/>
+            </p:column>
+            <p:column headerText="#{msg.availableQuantity}">
+                <h:outputText value="#{entity.availableQuantity}"/>
+            </p:column>
+        </my:dataTable>
+
+        <h1>#{msg.assignResourcesToExam}</h1><br/>
+
+        <h:form>
+            <span class="ui-float-label">
+                <p:inputNumber id="examId" value="#{resourceAssignmentBean.examId}" required="true"
+                               modifyValueOnWheel="false" minValue="1" decimalPlaces="0"/>
+                <p:outputLabel for="examId" value="${msg.examId}"/>
+            </span><br/>
+
+            <span class="ui-float-label">
+                <p:inputText id="necessaryResources" value="#{resourceAssignmentBean.necessaryResources}"
+                             required="true">
+                    <f:validator validatorId="necessaryResourcesValidator"/>
+                </p:inputText>
+                <p:outputLabel for="necessaryResources" value="#{msg.necessaryResources}"/>
+            </span><br/>
+
+            <h:commandButton value="#{msg.assign}" action="#{resourceAssignmentBean.submit}">
+                <f:ajax execute="@form" render="dataTable"/>
+            </h:commandButton>
+        </h:form>
+
+        <ui:repeat id="assignments" var="entry"
+                   value="#{currentResourceAssignmentsBean.resourcesAssignments.entrySet().toArray()}">
+            <h3>#{msg.exam}: #{currentResourceAssignmentsBean.getExamNameById(entry.key)}</h3>
+            <ul>
+                <ui:repeat var="entryResource"
+                           value="#{currentResourceAssignmentsBean.resourcesAssignments.get(entry.key)}">
+                    <li>#{currentResourceAssignmentsBean.getResourceNameById(entryResource.key)} - #{entryResource.value}</li>
+                </ui:repeat>
+            </ul>
+        </ui:repeat>
+    </ui:define>
+
+</ui:composition>
+
+</html>

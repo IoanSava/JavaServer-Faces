@@ -4,7 +4,7 @@ import ro.fii.javaserverfaces.dao.WrittenTestDao;
 import ro.fii.javaserverfaces.entities.WrittenTest;
 import ro.fii.javaserverfaces.utils.ExamFilters;
 
-import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import java.util.ArrayList;
@@ -14,12 +14,8 @@ import java.util.stream.Collectors;
 @Named
 @SessionScoped
 public class WrittenTestAutoCompleteViewBean extends AutoCompleteViewBean {
+    @EJB
     private WrittenTestDao writtenTestDao;
-
-    @PostConstruct
-    public void init() {
-        writtenTestDao = new WrittenTestDao();
-    }
 
     public List<String> completeText(String query) {
         String queryLowerCase = query.toLowerCase();

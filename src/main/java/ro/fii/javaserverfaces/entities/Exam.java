@@ -16,7 +16,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,9 +29,9 @@ import java.util.List;
         @NamedQuery(name = "Exam.getAll", query = "SELECT exam FROM Exam exam")
 })
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name="exam_type",
+@DiscriminatorColumn(name = "exam_type",
         discriminatorType = DiscriminatorType.STRING)
-public class Exam extends AbstractEntity implements Serializable {
+public class Exam extends AbstractEntity {
     @Basic(optional = false)
     @Column(name = "name")
     private String name;

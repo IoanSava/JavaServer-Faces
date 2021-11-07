@@ -2,7 +2,7 @@ package ro.fii.javaserverfaces.beans;
 
 import lombok.Getter;
 import lombok.Setter;
-import ro.fii.javaserverfaces.dao.ExamsDao;
+import ro.fii.javaserverfaces.entities.Exam;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -13,7 +13,6 @@ public abstract class CreateExamBean implements Serializable {
     protected String name;
     protected Date startingTime;
     protected Float duration;
-    protected ExamsDao examsDao;
 
     public abstract void submit();
 }

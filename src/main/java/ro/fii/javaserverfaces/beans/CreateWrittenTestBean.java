@@ -6,7 +6,7 @@ import ro.fii.javaserverfaces.dao.WrittenTestDao;
 import ro.fii.javaserverfaces.entities.WrittenTest;
 import ro.fii.javaserverfaces.utils.DateUtils;
 
-import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
@@ -16,11 +16,8 @@ import javax.inject.Named;
 @SessionScoped
 public class CreateWrittenTestBean extends CreateExamBean {
     private String bibliography;
-
-    @PostConstruct
-    public void init() {
-        examsDao = new WrittenTestDao();
-    }
+    @EJB
+    private WrittenTestDao examsDao;
 
     @Override
     public void submit() {

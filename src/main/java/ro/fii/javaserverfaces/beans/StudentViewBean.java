@@ -4,6 +4,7 @@ import ro.fii.javaserverfaces.dao.StudentsDao;
 import ro.fii.javaserverfaces.entities.Student;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
 import java.util.List;
@@ -11,11 +12,11 @@ import java.util.List;
 @Named
 @ApplicationScoped
 public class StudentViewBean extends DataViewBean<Student> {
+    @EJB
     private StudentsDao studentsDao;
 
     @PostConstruct
     public void init() {
-        studentsDao = new StudentsDao();
         entities = studentsDao.getAll();
     }
 

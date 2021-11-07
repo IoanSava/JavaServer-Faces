@@ -4,9 +4,11 @@ import ro.fii.javaserverfaces.dtos.StudentDto;
 import ro.fii.javaserverfaces.entities.Exam;
 import ro.fii.javaserverfaces.entities.Student;
 
+import javax.ejb.Stateless;
 import java.util.ArrayList;
 import java.util.List;
 
+@Stateless
 public class StudentsDao extends Dao<Student> {
     public List getAll() {
         return entityManager.createNamedQuery("Student.getAll").getResultList();
@@ -21,10 +23,8 @@ public class StudentsDao extends Dao<Student> {
         List<Exam> assignedExams = getListOfExamsForStudentDto(studentDto);
         student.addExams(assignedExams.toArray(new Exam[0]));
 
-        beginTransaction();
         entityManager.persist(student);
         entityManager.flush();
-        commitTransaction();
     }
 
     public void update(Integer id, StudentDto studentDto) {
@@ -34,10 +34,8 @@ public class StudentsDao extends Dao<Student> {
         List<Exam> assignedExams = getListOfExamsForStudentDto(studentDto);
         student.addExams(assignedExams.toArray(new Exam[0]));
 
-        beginTransaction();
         entityManager.merge(student);
         entityManager.flush();
-        commitTransaction();
     }
 
     private List<Exam> getListOfExamsForStudentDto(StudentDto studentDto) {

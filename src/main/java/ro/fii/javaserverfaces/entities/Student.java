@@ -15,7 +15,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +26,7 @@ import java.util.List;
 @NamedQueries({
         @NamedQuery(name = "Student.getAll", query = "SELECT student FROM Student student")
 })
-public class Student extends AbstractEntity implements Serializable {
+public class Student extends AbstractEntity {
     @Basic(optional = false)
     @Column(name = "name")
     private String name;

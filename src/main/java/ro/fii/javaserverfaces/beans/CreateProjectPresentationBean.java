@@ -6,7 +6,7 @@ import ro.fii.javaserverfaces.dao.ProjectPresentationDao;
 import ro.fii.javaserverfaces.entities.ProjectPresentation;
 import ro.fii.javaserverfaces.utils.DateUtils;
 
-import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
@@ -16,11 +16,8 @@ import javax.inject.Named;
 @SessionScoped
 public class CreateProjectPresentationBean extends CreateExamBean {
     private boolean areTeamsAllowed;
-
-    @PostConstruct
-    public void init() {
-        examsDao = new ProjectPresentationDao();
-    }
+    @EJB
+    private ProjectPresentationDao examsDao;
 
     @Override
     public void submit() {

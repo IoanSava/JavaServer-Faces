@@ -24,3 +24,12 @@ create table if not exists students_exams
     exam_id    integer not null references exams on delete restrict,
     primary key (student_id, exam_id)
 );
+
+create table if not exists resources
+(
+    id                 integer      not null generated always as identity,
+    name               varchar(100) not null,
+    available_quantity integer      not null,
+    primary key (id),
+    check (available_quantity >= 0)
+);

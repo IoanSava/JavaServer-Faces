@@ -1,3 +1,18 @@
+# [Lab 6] Enterprise Java Beans (EJB)
+
+### ✔️ Persistence layer using EJB
+
+* Transactions were implemented using EJB technology
+
+### ✔️ Reservation page
+
+* **src/main/webapp/reservation.xhtml**
+* Stateless session bean: **beans/ResourceViewBean.java**
+* Stateful session bean: **beans/ResourceAssignmentBean.java**
+* Singleton session bean: **beans/CurrentResourceAssignmentsBean.java**
+
+### ❌️ JPA optimizations
+
 # [Lab 5] Java Persistence API (JPA)
 
 ### ✔️ Persistence layer using JPA

@@ -21,12 +21,21 @@ values (1, 2);
 insert into students_exams(student_id, exam_id)
 values(1, 4);
 insert into students_exams(student_id, exam_id)
-values(2, 1);
+values (2, 1);
 insert into students_exams(student_id, exam_id)
-values(2, 3);
+values (2, 3);
 insert into students_exams(student_id, exam_id)
-values(3, 2);
+values (3, 2);
 insert into students_exams(student_id, exam_id)
-values(3, 3);
+values (3, 3);
 insert into students_exams(student_id, exam_id)
-values(3, 4);
+values (3, 4);
+
+insert into resources(name, available_quantity)
+values ('room', 5);
+insert into resources(name, available_quantity)
+values ('laptop', 10);
+insert into resources(name, available_quantity)
+values ('video projector', 8);
+insert into resources(name, available_quantity)
+values ('Arduino', 20);

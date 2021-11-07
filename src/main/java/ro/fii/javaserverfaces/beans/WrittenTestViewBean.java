@@ -1,19 +1,26 @@
 package ro.fii.javaserverfaces.beans;
 
 import ro.fii.javaserverfaces.dao.WrittenTestDao;
-import ro.fii.javaserverfaces.entities.WrittenTest;
-import ro.fii.javaserverfaces.utils.ExamFilters;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
+import java.util.List;
 
 @Named
 @ApplicationScoped
-public class WrittenTestViewBean extends ExamViewBean<WrittenTest> {
+public class WrittenTestViewBean extends ExamViewBean {
+    @EJB
+    protected WrittenTestDao examsDao;
+
     @PostConstruct
     public void init() {
-        examsDao = new WrittenTestDao();
         entities = examsDao.getAll(examFilters);
+    }
+
+    public List getEntities() {
+        entities = examsDao.getAll(examFilters);
+        return entities;
     }
 }
